@@ -2,7 +2,7 @@
 
 创建 / 编辑 / 拉取 Amazon listing(单品 + 设计款变体族)+ **标准 A+**,经 **multi-channel-api** 中间层(SP-API)。Claude Code 与 Codex 通用。
 
-> 与本仓根目录的「紫鸟高级A+(Premium A+)」skill 互补:那个用紫鸟建 **Premium** A+;这个用 SP-API 做 listing 全流程 + **标准** A+。
+> 与同仓 [`ziniao-premium-aplus/`](../ziniao-premium-aplus/) 的「紫鸟高级A+」skill 互补:那个用紫鸟建 **Premium** A+;这个用 SP-API 做 listing 全流程 + **标准** A+。
 
 ## 功能(`scripts/`)
 - `create_listing.py` —— 创建/校验 listing(单品/变体族;本地图 `file:` 自动传 COS)
