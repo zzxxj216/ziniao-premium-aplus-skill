@@ -36,8 +36,10 @@ cp .env.example .env   # 填 APLUS_BASE_URL 和 APLUS_API_KEY
 重开一个 Claude Code 会话即可;运营说"用这个文件夹给某商品做高级A+"会自动触发。
 
 ## 安装:Codex
-把 `codex/AGENTS.md` 放进 Codex 工作目录(或并入 `~/.codex/AGENTS.md`),并把 `codex/reference/` 一起带上;再 `export APLUS_BASE_URL`、`APLUS_API_KEY`。详见 `codex/AGENTS.md`。
-> 若你的 Codex 支持 `~/.codex/skills/`(同 SKILL.md 格式),也可直接把本仓库当作一个 skill 放进去。
+两种方式任选:
+- **当 skill 装(推荐)**:`codex/` 目录已含 `SKILL.md`,整个 `codex/` 放进 `~/.agents/skills/ziniao-premium-aplus/`(或项目 `.agents/skills/`,Codex 从 cwd 向上扫自动发现);配 `APLUS_BASE_URL` / `APLUS_API_KEY`。
+- **当 AGENTS 指令装**:把 `codex/AGENTS.md` 放进 Codex 工作目录(或并入 `~/.codex/AGENTS.md`),并把 `codex/reference/` 一起带上。
+> `codex/SKILL.md` 与 `codex/AGENTS.md` 内容一致,前者用于 skill 安装,后者用于 AGENTS 合并。
 
 ## 配置(每台机器一次)
 `.env`(或环境变量):
