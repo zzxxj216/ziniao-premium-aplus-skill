@@ -10,16 +10,17 @@
 - `pull_product.py` —— 拉产品信息(按 SKU=listing 视角 / 按 ASIN=catalog 摘要)
 - `aplus.py` —— A+ 列出 / 绑定到 ASIN(含 Premium 文档)/ 用图建标准 A+
 
-## 安装
+## 安装(运营端极简)
 ```bash
-pip install requests qcloud-cos-python-sdk-v5 Pillow python-dotenv
-cp .env.example .env          # 填 AMAZON_MCA_URL + 腾讯 COS_*
+pip install requests python-dotenv     # 就这俩
+cp .env.example .env                    # 只填 AMAZON_MCA_URL(中间层地址)
 # Claude Code:把本目录放进 ~/.claude/skills/
 # Codex:    把本目录放进 ~/.agents/skills/(或项目 .agents/skills/)
 ```
+> **运营端只填一个 `AMAZON_MCA_URL`,其余一概不碰**(COS / SP-API 密钥都在中间层)。
 
-## 依赖的服务
-- **multi-channel-api**(中间层,持有 SP-API 凭证,部署在跑 SP-API 的机器上)必须在跑;地址填 `.env` 的 `AMAZON_MCA_URL`。
-- **腾讯云 COS**(图床,`COS_*`)——传图给 Amazon 抓取用。
+## 依赖的服务(服务端,一次性)
+- **multi-channel-api**(中间层,部署在跑 SP-API 的机器上)必须在跑;它的 `.env` 持有 SP-API 凭证 + `COS_*`。
+- 传图:运营端把本地图发给中间层 `/amazon/images/upload`,中间层用自己的 COS 凭证上传 → 返回公网 URL。
 
 详细操作 + 字段坑见 `SKILL.md` 和 `references/tips.md`。

@@ -8,12 +8,13 @@ description: 在 Amazon(inkelligent 等店/美国站)创建 listing(单品或设
 把"创建 listing / 编辑 / 拉取 / 绑定 A+"固化为可复用流程。脚本在 `scripts/`,**自包含**(从本 skill 目录运行 `cd amazon-listing`)。
 
 ## 前置条件(每次先确认)
-**统一只依赖一件事:中间层 multi-channel-api 在跑。**
-1. **Python 依赖**:`pip install requests qcloud-cos-python-sdk-v5 Pillow python-dotenv`(COS/裁图/读 .env 用)。
-2. **中间层 multi-channel-api 必须在跑**(create / edit / pull / A+ 全走它的 HTTP)。需带 Amazon 路由 + `VALIDATION_PREVIEW` 透传 + A+ 端点(`/amazon/aplus/*`)。
-   - 地址 env `AMAZON_MCA_URL`(默认 `http://localhost:8000`)。没起会报 NETWORK。
-   - 起法(在 multi-channel-api 仓):`python -m uvicorn app.main:app --port 8000`
-3. **配置 `.env`**:`cp .env.example .env` 填好(`AMAZON_MCA_URL` + 腾讯 `COS_*`)。COS 给 create_listing / aplus create 传图用。.env 放本 skill 目录,脚本自动读。
+**运营端极简:只装 2 个 Python 包 + 只填 1 个地址。其余(COS/SP-API 密钥、裁图)全在中间层。**
+1. **Python 依赖(运营端)**:`pip install requests python-dotenv`(就这俩;不需要 COS/Pillow——传图/裁图都在中间层做)。
+2. **配置 `.env`**:`cp .env.example .env`,**只填 `AMAZON_MCA_URL`**(中间层地址)。COS 等密钥运营端一概不碰。
+3. **中间层 multi-channel-api 必须在跑**(create / edit / pull / A+ / 传图 全走它的 HTTP):
+   - 需带 Amazon 路由 + `VALIDATION_PREVIEW` 透传 + A+ 端点 + **图片上传端点 `/amazon/images/upload`**;
+   - 中间层那台机器的 `.env` 持有 SP-API 凭证 + `COS_*`(一次性配);
+   - 起法:`python -m uvicorn app.main:app --port 8000`。没起会报 NETWORK。
 
 ## 店铺选择与权限
 - **指定店铺**:每个脚本支持 `--store <name>`,默认 `main`(=inkelligent)。可用店铺:`main / qifengz / serenorch / bfpeaky`(中间层 `AMAZON_STORES_JSON`)。

@@ -98,18 +98,19 @@ def patch_listing(sku: str, product_type: str, patches: list) -> dict:
 
 
 def upload_image_cos(path_or_bytes, key_prefix: str = "amazon") -> str:
-    """本地图/字节 → 腾讯 COS 公网 URL(内容哈希 key,防 URL 缓存)。COS_* 从 env 读。"""
-    sid = os.getenv("COS_SECRET_ID"); sk = os.getenv("COS_SECRET_KEY")
-    region = os.getenv("COS_REGION"); bucket = os.getenv("COS_BUCKET")
-    base = (os.getenv("COS_BASE_URL") or (f"https://{bucket}.cos.{region}.myqcloud.com" if bucket and region else "")).rstrip("/")
-    if not all([sid, sk, region, bucket, base]):
-        raise RuntimeError("COS 未配全(.env 的 COS_SECRET_ID/COS_SECRET_KEY/COS_REGION/COS_BUCKET[/COS_BASE_URL])")
+    """本地图/字节 → 中间层 /amazon/images/upload → COS 公网 URL。
+    **运营端无需任何 COS 凭证**;COS 在中间层(服务端)持有。"""
+    import requests  # 仅上传时用
     data = path_or_bytes if isinstance(path_or_bytes, (bytes, bytearray)) else open(path_or_bytes, "rb").read()
-    from qcloud_cos import CosConfig, CosS3Client
-    client = CosS3Client(CosConfig(Region=region, SecretId=sid, SecretKey=sk, Scheme="https"))
-    key = f"{key_prefix}/{hashlib.sha1(bytes(data)).hexdigest()[:12]}.png"
-    client.put_object(Bucket=bucket, Body=bytes(data), Key=key, ContentType="image/png")
-    return f"{base}/{key}"
+    r = requests.post(f"{BASE}/api/v1/amazon/images/upload",
+                      files={"file": ("img.png", bytes(data), "image/png")}, timeout=120)
+    try:
+        o = r.json()
+    except Exception:
+        raise RuntimeError(f"图片上传失败 HTTP {r.status_code}: {r.text[:150]}")
+    if not o.get("success"):
+        raise RuntimeError("图片上传失败:" + str(o.get("message") or o.get("detail")))
+    return o["data"]["url"]
 
 
 def issues_of(resp: dict) -> tuple[str, list]:
