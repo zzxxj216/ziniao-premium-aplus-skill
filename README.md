@@ -1,3 +1,16 @@
+# Amazon 运营技能合集
+
+本仓含两个互补的 agent 技能(Claude Code / Codex 通用):
+
+| 技能 | 位置 | 做什么 |
+|---|---|---|
+| **紫鸟高级A+(ziniao-premium-aplus)** | 仓根目录 | 用紫鸟(浏览器自动化)把素材图建成**Premium 高级 A+** 草稿 |
+| **amazon-listing** | `amazon-listing/` | 用 SP-API(multi-channel-api 中间层)做 listing **创建/编辑/拉取 + 标准 A+** |
+
+详见各自的 `SKILL.md` / `README.md`。下面是「紫鸟高级A+」的说明。
+
+---
+
 # 紫鸟高级 A+ 制作技能(ziniao-premium-aplus)
 
 把"一组素材图"变成亚马逊后台的**高级 A+(Premium A+)草稿**。识别/选型/文案由 agent(Claude Code 或 Codex)完成,**创建执行由中心服务**(装了紫鸟的公共电脑)通过 HTTP 接口完成。本仓库只含**技能/指令 + 文档**,不含服务端代码。
