@@ -4,3 +4,4 @@
 
 __pycache__/
 *.pyc
+.asin_cache.json
