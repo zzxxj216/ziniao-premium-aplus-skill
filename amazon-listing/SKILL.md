@@ -127,6 +127,7 @@ python scripts/lint_listing.py <SKU> [...]        # 上架体检:专抓非必填
 python scripts/replace_images.py <SKU> show|main|gallery|all ...   # 换主图/副图(file: 自动传COS;会提醒"多余槽清不掉去后台删")
 python scripts/family_status.py <SKU> [...]       # 族状态一览(ASIN/状态/价/库存/图数)+ **ASIN 变更检测**(变了⚠️,防 AC-1022)
 python scripts/stores.py [--refresh]              # 店铺×站点矩阵(seller_id/授权状态/寻址写法);选店前先看它
+python scripts/list_products.py --store 店[@站点] [--all] [--csv f.csv]  # **拉全店产品**(SKU/ASIN/价/库存/BuyBox;赛狐数据,分钟级延迟)
 ```
 
 ## 典型完整流程
