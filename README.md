@@ -6,7 +6,7 @@
 |---|---|---|
 | **紫鸟高级A+** | [`ziniao-premium-aplus/`](ziniao-premium-aplus/) | 用紫鸟(浏览器自动化,中心服务)把素材图建成 **Premium 高级 A+** 草稿 |
 | **amazon-listing** | [`amazon-listing/`](amazon-listing/) | 用 SP-API(multi-channel-api 中间层)做 listing **创建/编辑/拉取 + 标准 A+** |
-| **tk2amazon** | [`tk2amazon/`](tk2amazon/) | 把 TikTok Shop 已有产品**同步到 Amazon**(拉TK→人机协作补缺口→经 amazon-listing 建品) |
+| **tk2amazon** | [`tk2amazon/`](tk2amazon/) | 把 TikTok Shop 已有产品**同步到 Amazon / Shopify / Etsy**(拉TK→人机协作补缺口→建草稿) |
 
 两者**互补**:`ziniao-premium-aplus` 做 SP-API 建不了的 **Premium A+**;`amazon-listing` 做 listing 全流程 + **标准 A+**。
 
