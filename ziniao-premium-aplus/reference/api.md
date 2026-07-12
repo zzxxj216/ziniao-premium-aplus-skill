@@ -44,10 +44,11 @@ curl -s -X POST "$APLUS_BASE_URL/aplus/upload" -H "X-API-Key: $APLUS_API_KEY" \
 ```json
 {
   "store": "XY",                         // 紫鸟店铺名;省略则用服务端默认店铺
-  "site":  "US",                         // 可选,店铺站点:US/UK/DE/FR/IT/ES/JP/CA/MX…。
-                                         //   省略则自动探测(店铺已停在自己 Seller Central 时)再退回美国。
-                                         //   若自动域名不对,可用 "sc_host":"sellercentral.amazon.de" 直接指定,
-                                         //   或设环境变量 APLUS_SC_HOST 覆盖。
+  "site":  "US",                         // 可选,目标站点:US/CA/MX/UK/DE/FR/IT/ES/NL/PL/BE/IE/SE…
+                                         //   非美国站:程序用【账号切换器】主动切到该市场(不靠域名),再在当前域名开
+                                         //   内容管理器,并把 A+ 语言设成该站 locale(如 IT→it_IT)。语言设不上(市场
+                                         //   没切对/账号未开通)会中止,不会建错国家。也可用 "marketplace":"Italy"
+                                         //   直接给国家名、"language":"fr_CA" 覆盖语言。前提:该档案已登录且账号开通该站。
   "name": "商品描述名称(必填)",
   "modules": [
     {
