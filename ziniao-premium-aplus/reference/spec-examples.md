@@ -110,6 +110,21 @@
 > - ASIN 要**真实**;产品数按 asins 顺序,更多产品在后台"添加商品"。
 > - `names`=短标题(对比表2≤30、对比表1/3≤25);`img_titles` 是旧别名,等价。
 
+### 对比表1 + 比较指标 `metrics`(逐属性对比)
+每个指标一行,`values` 顺序**对应 `asins`**(第 0 个=主角)。指标名 ≤30、值 ≤60;后台要求≥5 个指标。
+```json
+{"type":"对比表1","title":"Compare Our Range",
+ "asins":["B0主角","B0产品2","B0产品3","B0产品4","B0产品5","B0产品6","B0产品7"],
+ "names":["主角款≤25","款2","款3","款4","款5","款6","款7"],
+ "metrics":[
+   {"name":"Color","values":["Custom","Custom","Custom","Holographic","Gold","Custom","Custom"]},
+   {"name":"Material","values":["PVC","PVC","PVC","PVC","PVC","PVC","PVC"]},
+   {"name":"Finish type","values":["Gloss/Matte","Gloss/Matte","Gloss/Matte","Gloss/Matte","Gloss/Matte","Gloss/Matte","Gloss/Matte"]},
+   {"name":"Min Pieces","values":["60","6","50","50","50","5","30"]},
+   {"name":"Apply","values":["Packaging","Packaging","Packaging","Packaging","Packaging","Packaging","Packaging"]}
+ ]}
+```
+
 ## 热点类(1/2,图上坐标标注)
 
 ```json

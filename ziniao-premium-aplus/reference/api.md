@@ -44,6 +44,10 @@ curl -s -X POST "$APLUS_BASE_URL/aplus/upload" -H "X-API-Key: $APLUS_API_KEY" \
 ```json
 {
   "store": "XY",                         // 紫鸟店铺名;省略则用服务端默认店铺
+  "site":  "US",                         // 可选,店铺站点:US/UK/DE/FR/IT/ES/JP/CA/MX…。
+                                         //   省略则自动探测(店铺已停在自己 Seller Central 时)再退回美国。
+                                         //   若自动域名不对,可用 "sc_host":"sellercentral.amazon.de" 直接指定,
+                                         //   或设环境变量 APLUS_SC_HOST 覆盖。
   "name": "商品描述名称(必填)",
   "modules": [
     {

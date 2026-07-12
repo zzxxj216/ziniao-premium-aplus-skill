@@ -31,11 +31,11 @@ description: >
      - 原始照片 → 用 单图文/双图/四图/背景,**由你写文案**。
    - **图多守上限**:一篇**最多 7 模块**;图多时用**轮播**(1 模块装 2~6 张)打包,别超 7。图太大不用管,程序自动缩放。
    - **图不达标可重绘**:某图尺寸不够/比例不符/质量差/缺图时,若你支持绘图(**Codex 自带**),**先和运营确认**再按该模块目标尺寸重绘一张(贴合商品/品牌),AI 生成的标 `"ai_generated": true`。详见 layout-planning.md。
-2. **⭐ 先和运营确认排版**(动手前的关口):把**模块清单 + ASCII 排版草图**发给运营,问"顺序/选型/文案 OK 吗?缺的 ASIN/视频补一下?",**得到确认或按反馈调整后再建**。缺素材就回去问,别编造。
+2. **⭐ 先出预览页 + 和运营确认排版**(动手前的关口):**先本地生成预览页**(跑 `service/preview.py <build_module>`,或 `from preview import render_preview`),它把 spec 渲染成模拟高级 A+ 竖向排版的 HTML(桌面图逐张堆叠 + 问答 + 对比表),**不碰紫鸟/亚马逊**。连同模块清单发给运营确认"顺序/选型/文案 OK 吗?缺的 ASIN/视频补一下?",**得到确认或按反馈调整后再建**。缺素材就回去问,别编造。
 3. **生成文案**:按字段(标题/副标题/正文…)生成对应站点语言文案,**遵守字数上限**(见 modules.md)。
 4. **上传图片(服务在别的机器时必做)**:中心服务只能读它自己机器上的路径。若 `APLUS_BASE_URL` 不是本机(127.0.0.1),**先 `POST /aplus/upload` 把图传上去**,用返回的**服务端路径**填进 spec(见 api.md)。同机部署可跳过。
 5. **构造 spec 并调接口**(见 `reference/api.md`):`POST {APLUS_BASE_URL}/aplus/create`,头 `X-API-Key`。优先用按字段名填(见 §五)。
-6. **看返回**:`ok=true` 且 `validation_failed=false` 即草稿建成,把返回的 `url` 给运营。
+6. **看返回**:`ok=true` 且 `validation_failed=false` 即草稿建成。**只把内容编号回给运营**(编号 = 返回 `url` 里 `.../content/<UUID>/revision/...` 的那个 UUID),**不要贴整条链接**。
 7. **最终确认 + 提交**:让运营在后台点 **Preview** 看实际排版;不满意就改 spec 重建(草稿可反复改),满意后由**运营手动提交审核**(并确认 AI 披露等合规项)。
 
 ## ⚠️ AI 图片披露
@@ -57,6 +57,7 @@ description: >
 - 对比表:给真实 ASIN(须该店铺可用)。
 - 热点类:给 `hotspots:[{title,body},...]`,程序在底图上按坐标铺开放置热点并填字。
 - **语言**:自动适配店铺 UI 语言,**简体中文 / 英文 Seller Central 都支持**(选择器中英双语)。文案仍按站点语言由你生成。
+- **多站点**:支持美/欧(UK/DE/FR/IT/ES)/日/加/墨等。非美国站在 spec 里给 `"site":"DE"` 等(或 `"sc_host"`/env `APLUS_SC_HOST`);省略默认美国。**注意**:UI 选择器目前只内置中/英,若该店 Seller Central 界面是德/日/法等语言会匹配不上——把该店后台**界面语言设成英文或中文**即可正常跑。
 
 ## 五、填字段:优先用"字段名"(更稳)
 用命名字段 `title`/`subtitle`/`body`/`nav`/`img_title`(程序按字段 placeholder 精确填,中英双语),
@@ -68,3 +69,4 @@ description: >
 - 接口字段/返回格式 → 读 `reference/api.md`
 - 每个模块要填什么、图片尺寸、字数上限、选型指南 → 读 `reference/modules.md`
 - **每个模块的可直接照抄 spec 示例(全 19 个)→ 读 `reference/spec-examples.md`**
+- **Inkelligent 儿童姓名标签系列(已跑通 5 个主题的固定 7 模块模板,换主题只改几个变量)→ 读 `reference/kidlabels-template.md`**
