@@ -13,10 +13,10 @@
 ## 怎么用
 每个文件夹都是一个**自包含的 skill**(含 `SKILL.md` + `README.md`)。安装时把对应文件夹拷进 agent 的 skills 目录:
 - **Claude Code**:`cp -R <文件夹> ~/.claude/skills/`
-- **Codex**:`cp -R <文件夹> ~/.agents/skills/`(`ziniao-premium-aplus` 用其 `codex/` 子目录)
+- **Codex**:`cp -R <文件夹> ~/.agents/skills/`(三个技能都是同一份文件夹,Claude/Codex 通用)
 
 各自的依赖、配置、用法见**文件夹内的 `README.md` / `SKILL.md`**:
-- 紫鸟高级A+ → [`ziniao-premium-aplus/README.md`](ziniao-premium-aplus/README.md)(配 `APLUS_BASE_URL` / `APLUS_API_KEY`)
+- 紫鸟高级A+ → [`ziniao-premium-aplus/README.md`](ziniao-premium-aplus/README.md)(配 `APLUS_BASE_URL` / `APLUS_API_KEY`;含儿童标签模板/本地预览页流程)
 - amazon-listing → [`amazon-listing/README.md`](amazon-listing/README.md)(运营端只填 `AMAZON_MCA_URL`)
 
 > 两个技能的**服务端**(紫鸟中心服务 / multi-channel-api 中间层)都部署在各自的主项目仓库,本仓只含技能/指令 + 文档,不含服务端代码,也不含任何密钥。
