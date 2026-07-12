@@ -95,7 +95,7 @@ curl -s -X POST "$APLUS_BASE_URL/aplus/upload" -H "X-API-Key: $APLUS_API_KEY" \
   "ok": true,                 // 草稿是否保存成功
   "name": "...",
   "store": "XY",
-  "url": "https://sellercentral.amazon.com/.../content/<id>/revision/<ts>/edit",
+  "content_id": "0aa7a169-2a80-400b-9ab3-8e44c2e0715e",  // 内容编号(不含域名/链接);回给运营用这个
   "named": true,
   "validation_failed": false, // true 表示有必填项没填全/校验失败
   "warnings": ["模块1[完整图片]: alt 长 130 超 100,上传时会截断 → …"],  // 非阻塞提示(可能没有)

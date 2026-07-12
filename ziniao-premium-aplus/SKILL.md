@@ -35,7 +35,7 @@ description: >
 3. **生成文案**:按字段(标题/副标题/正文…)生成对应站点语言文案,**遵守字数上限**(见 modules.md)。
 4. **上传图片(服务在别的机器时必做)**:中心服务只能读它自己机器上的路径。若 `APLUS_BASE_URL` 不是本机(127.0.0.1),**先 `POST /aplus/upload` 把图传上去**,用返回的**服务端路径**填进 spec(见 api.md)。同机部署可跳过。
 5. **构造 spec 并调接口**(见 `reference/api.md`):`POST {APLUS_BASE_URL}/aplus/create`,头 `X-API-Key`。优先用按字段名填(见 §五)。
-6. **看返回**:`ok=true` 且 `validation_failed=false` 即草稿建成。**只把内容编号回给运营**(编号 = 返回 `url` 里 `.../content/<UUID>/revision/...` 的那个 UUID),**不要贴整条链接**。
+6. **看返回**:`ok=true` 且 `validation_failed=false` 即草稿建成。返回里的 **`content_id`** 就是内容编号(**不含域名/链接**)——**只把这个编号回给运营**,别贴链接。
 7. **最终确认 + 提交**:让运营在后台点 **Preview** 看实际排版;不满意就改 spec 重建(草稿可反复改),满意后由**运营手动提交审核**(并确认 AI 披露等合规项)。
 
 ## ⚠️ AI 图片披露
