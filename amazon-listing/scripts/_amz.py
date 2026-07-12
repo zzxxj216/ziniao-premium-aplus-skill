@@ -23,7 +23,8 @@ except Exception:
 
 MP = os.getenv("AMAZON_MARKETPLACE_ID", "ATVPDKIKX0DER")   # 默认美国站
 STORE = os.getenv("AMAZON_STORE", "main")                  # 当前店铺,默认 main
-BASE = os.getenv("AMAZON_MCA_URL", "http://localhost:8000").rstrip("/")
+_BASE_CONFIGURED = bool(os.getenv("AMAZON_MCA_URL") or os.getenv("TKSHOP_SERVER_URL"))
+BASE = os.getenv("AMAZON_MCA_URL", os.getenv("TKSHOP_SERVER_URL", "http://192.168.110.227:8000")).rstrip("/")
 BRAND = os.getenv("AMAZON_BRAND", "Inkelligent")           # 必须用已备案品牌(GTIN 豁免)
 
 # 店铺白名单:**动态取自中间层 /stores**(=真正配了 SP-API 授权的店),
@@ -70,7 +71,8 @@ def consume_store(argv: list) -> list:
                          f"(来自中间层 /stores)。新店先在中间层 .env 的 AMAZON_STORES_JSON 注册并重启;"
                          f"临时放行可设 env AMAZON_ALLOWED_STORES。用法:--store 店名[@站点],如 byane@UK。")
     STORE = store
-    print(f"[store = {store}]" + ("" if store == DEFAULT_STORE else "  ⚠️ 非默认店!"))
+    cfg = "" if _BASE_CONFIGURED else "(默认值,未配 AMAZON_MCA_URL)"
+    print(f"[store = {store}]" + ("" if store == DEFAULT_STORE else "  ⚠️ 非默认店!") + f"  [中间层 = {BASE}{cfg}]")
     return out
 
 
