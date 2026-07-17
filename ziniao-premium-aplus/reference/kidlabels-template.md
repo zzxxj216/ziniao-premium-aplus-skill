@@ -69,9 +69,8 @@
 - 支持 `--dry` 打印 spec JSON。
 
 ## 六、建之前先出预览页(不碰紫鸟)
-**用紫鸟创建之前,先让 agent 跑 `preview.py` 出一个模拟真实 listing 的预览页给运营确认排版。**
-`python preview.py build_kidlabels_<主题> [out.html]`(或 `from preview import render_preview`)。
-**纯本地、不登录不建草稿。** 预览页贴近上架后观感:
+**用紫鸟创建之前,先由 agent 按 spec 自己写一个 HTML 预览页(如 `preview.html`)给运营确认排版。**
+**纯本地、不登录不建草稿。** 预览页尽量贴近上架后观感,建议做到:
 - 💻/📱 **视图切换**(桌面/移动两版图切换,页宽跟着变);
 - **真轮播**(箭头 + 圆点,一屏一屏切);
 - **样式化对比表**(hero 列高亮、首列固定、可横向滚动);

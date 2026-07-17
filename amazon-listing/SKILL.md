@@ -31,7 +31,8 @@ description: 在 Amazon(inkelligent 等店/美国站)创建 listing(单品或设
 - **权限模型**:这是本地脚本工具,**无 RBAC**;真正的卖家凭证只在**中间层 `.env`**(`AMAZON_STORES_JSON`),skill 不持有密钥。要控制"谁能操作哪个店",靠:① 谁能跑脚本/起中间层 ② 中间层注册哪些店(skill 白名单自动跟随)③ 默认锁 main + 非默认店要显式 `--store`。
 
 ## 🔴 安全红线(不可破)
-- **只用 store=main(=inkelligent)**,美国站 `ATVPDKIKX0DER`。
+- **默认 store=main(=inkelligent,美国站 `ATVPDKIKX0DER`)**;操作非默认店必须显式
+  `--store 店名[@站点]` 且在白名单内(见上节,脚本会打印醒目横幅),不允许静默换店。
 - **只新增,不删不改现有产品**;create 前对单品/父体先 GET 确认 404(脚本已做)。
 - 创建的 listing 默认 `fulfillment_availability.quantity=0`(不可售草稿),确认后再加库存上架。
 - 品牌一律 **`Inkelligent`**(已备案;子品牌会丢 GTIN 豁免 → 报 `externally_assigned_product_identifier`)。
@@ -52,8 +53,7 @@ python scripts/create_listing.py create   payload.json   # 真建/更新
 **注意 VALIDATION_PREVIEW 比真提交宽松**,真建可能多报字段(如当年 unit_count),所以真建后也要看 issues。
 
 ### 产品类型与必填(已验证,直接用)
-先探针确认类型:`GET /product-types?keywords=<词>`(贴纸=`STICKER_DECAL`,姓名标签/标签=`LABEL`)。
-完整可用模板见 `docs/amazon_sticker_decal_attributes.example.json`。关键字段事实:
+先探针确认类型:`GET /product-types?keywords=<词>`(贴纸=`STICKER_DECAL`,姓名标签/标签=`LABEL`)。关键字段事实:
 - 通用必填:`brand`(=Inkelligent)、`manufacturer`、`item_name`、`bullet_point`、`product_description`、
   `country_of_origin`(国家码如 CN)、`item_type_keyword`、`supplier_declared_dg_hz_regulation`(=not_applicable)、
   `condition_type`(=new_new)、`supplier_declared_has_product_identifier_exemption`(=true 免 UPC)、
