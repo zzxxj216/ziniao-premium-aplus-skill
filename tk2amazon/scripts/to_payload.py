@@ -7,7 +7,7 @@
 
 前提:draft 的 `amazon` 块已按 gap_check 补完(缺关键项会拒绝并指出)。
 图片一律用**绝对路径** file:(先跑过 tk_pull --download),避免换目录跑 create 时断链。
-产出后走 amazon-listing:create_listing.py validate/create 或 create_family.py。
+产出后走 amazon-listing:create_listing.py create 或 create_family.py create。
 """
 import json
 import os
@@ -27,7 +27,7 @@ def L(v):
 def require(a: dict, keys: list[str]):
     missing = [k for k in keys if a.get(k) in (None, "", [])]
     if missing:
-        raise SystemExit(f"[拒绝] amazon 块还缺:{', '.join(missing)} —— 先跑 gap_check.py 按清单补齐(事实类要问人)。")
+        raise SystemExit(f"[拒绝] amazon 块还缺:{', '.join(missing)} —— 先跑 gap_check.py 按清单补齐。")
 
 
 def img_locators(d: dict) -> dict:
@@ -108,7 +108,7 @@ def build_attributes(d: dict) -> dict:
         attrs["number_of_labels"] = L(int(a.get("number_of_labels") or a["unit_count"]))
         # LABEL 不要 model_name / required_product_compliance_certificate(实证)
     else:
-        print(f"[warn] product_type={pt} 没有内置必填集,先用 amazon-listing 探针核对必填字段再 validate")
+        print(f"[warn] product_type={pt} 没有内置必填集,先用 amazon-listing 探针核对必填字段再 create")
     return attrs
 
 
@@ -126,12 +126,12 @@ def main(path: str, family: bool):
         out = os.path.join(outdir, "payload.json")
         json.dump(payload, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
         print(f"payload 已生成:{out}")
-        print(f"下一步(amazon-listing):\n  python create_listing.py validate \"{out}\" --store {a['store']}")
+        print(f"下一步(amazon-listing):\n  python create_listing.py create \"{out}\" --store {a['store']}")
     else:
         variants = a.get("variants") or []
         if not variants:
             raise SystemExit('[拒绝] --family 需要 amazon.variants:[{"sku":..,"color":..,"main_image":"file:绝对路径"}...]'
-                             "(变体映射是'必须问人'项)")
+                             "(按 draft 的 sales_attributes 填变体映射)")
         common = {k: v for k, v in attrs.items()
                   if "image_locator" not in k and k != "color"}
         fam = {"product_type": a["product_type"].upper(), "parent_sku": a["sku"],
@@ -142,7 +142,7 @@ def main(path: str, family: bool):
         out = os.path.join(outdir, "family.json")
         json.dump(fam, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
         print(f"family 已生成:{out}")
-        print(f"下一步(amazon-listing):\n  python create_family.py validate \"{out}\" --store {a['store']}")
+        print(f"下一步(amazon-listing):\n  python create_family.py create \"{out}\" --store {a['store']}")
 
 
 if __name__ == "__main__":

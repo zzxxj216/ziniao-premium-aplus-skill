@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """TK 产品同步到 Etsy(走中间层现成端点,**只建草稿**,上架永远人工)。
 
-用法(默认只打印计划,不发请求;人点头后加 --go 才真建):
+用法(不带 --go 只打印计划自查;加 --go 真建):
   python to_etsy.py tk_drafts/<id>/draft.json --tags "cat stickers,rescue cat,..." [选项]
   python to_etsy.py tk_drafts/<id>/draft.json --tags "..." --go        # 真建(Etsy 草稿)
 
 选项:
-  --tags "a,b,c"      Etsy 标签,≤13 个(TK 没有对应字段,必须人给或 agent 拟好经人确认)
+  --tags "a,b,c"      Etsy 标签,≤13 个(TK 没有对应字段,agent 自行拟定)
   --title "..."       标题覆盖(≤140,缺省用 TK 标题截断)
   --price 12.99       统一价覆盖 | --price-mult 1.3  价格倍率(默认 1.0=沿用 TK 价)
   --qty 100           数量覆盖(1-999;缺省 TK 库存)
@@ -82,7 +82,7 @@ def build_body(draft: dict, opt: dict) -> dict:
         body["tiktok_shop"] = src["shop"]
     tags = [t.strip() for t in (opt.get("tags") or "").split(",") if t.strip()]
     if not tags:
-        raise SystemExit("[拒绝] --tags 必给(Etsy 标签 TK 没有,人给或 agent 拟好经人确认;≤13 个,逗号分隔)")
+        raise SystemExit("[拒绝] --tags 必给(Etsy 标签 TK 没有,agent 自行拟定;≤13 个,逗号分隔)")
     if len(tags) > 13:
         raise SystemExit(f"[拒绝] tags {len(tags)} 个 >13(Etsy 上限)")
     body["tags"] = tags
@@ -129,7 +129,7 @@ def main(argv: list):
     print(json.dumps(body, ensure_ascii=False, indent=1))
     print(f"TK 价参考:{[(s.get('price'), s.get('price_raw')) for s in draft.get('skus') or []]}")
     if not go:
-        print("\n[dry] 未发请求。把上面计划贴给用户确认;点头后加 --go 真建(Etsy 草稿)。")
+        print("\n[dry] 未发请求。计划无误就加 --go 真建(Etsy 草稿)。")
         return
     o = _api("POST", "/sync-from-tiktok", body=body)
     d = o.get("data") or {}

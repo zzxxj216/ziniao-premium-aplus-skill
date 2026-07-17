@@ -7,7 +7,7 @@
 
 安全设计:
 - draft.json 已存在时,**保留旧的 amazon 块和已下载图片的 local**(只刷新 TK 事实)——
-  重跑不会丢人工答案;想彻底重来加 --force。
+  重跑不会丢已填答案;想彻底重来加 --force。
 - 图片 local 记**绝对路径**,后续 to_payload/create 从任何目录跑都不断。
 - 单张图下载失败只警告跳过,draft.json 照常落盘(先落盘再下载)。
 """
@@ -64,11 +64,10 @@ def normalize(d: dict) -> dict:
         "category_chain": [c.get("local_name") for c in (d.get("category_chains") or [])
                            if c.get("local_name")],
         "listing_quality_tier_tk": d.get("listing_quality_tier"),
-        # ↓↓ Amazon 侧待补(人机协作填;gap_check.py 逐项检查;事实来源写进 notes)↓↓
+        # ↓↓ Amazon 侧待补(agent 从 TK 数据推断补齐;gap_check.py 逐项检查)↓↓
         "amazon": {
             "store": None,              # 目标店铺[@站点],如 "main" / "byane@UK"(字符串)
             "product_type": None,       # "STICKER_DECAL" / "LABEL"(探针确认)
-            "keyword_csv": None,        # 关键词表**绝对路径**(老板规矩:创建前必须有)
             "sku": None,                # Amazon 新 SKU(全新唯一)
             "title": None,              # ≤75 字符英文
             "title_differentiation": None,   # Item Highlight ≤125
@@ -77,9 +76,9 @@ def normalize(d: dict) -> dict:
             "backend_keywords": None,   # 字符串,≤249 字节
             "number_of_items": None, "unit_count": None,   # 整数
             "color": None, "theme": None, "subject_character": None,
-            "price_usd": None,          # 数字;沿用 TK 价还是重定,人来定
+            "price_usd": None,          # 数字;默认沿用 TK 价(注意 raw 百倍歧义)
             "variants": None,           # 变体族用:[{"sku","color","main_image":"file:绝对路径"}]
-            "notes": [],                # 事实留痕:如 "number_of_items=50 ← 用户确认 2026-07-10"
+            "notes": [],                # 可选备注(如推断依据),不强制
         },
     }
 
@@ -139,7 +138,7 @@ def main(pid: str, do_download: bool, force: bool):
     print(f"  标题(TK): {draft['title_tk'][:70]}")
     print(f"  图 {len(draft['images'])} 张 | SKU {len(draft['skus'])} 个 | 类目 {' > '.join(draft['category_chain'][:3])}")
     has_var = any(s["sales_attributes"] for s in draft["skus"])
-    print(f"  变体: {'有(sales_attributes,需人确认 COLOR 映射)' if has_var else '无(单品)'}")
+    print(f"  变体: {'有(sales_attributes,需填 COLOR 映射)' if has_var else '无(单品)'}")
     print("  ⚠️ TK 图直接搬 Amazon 常不合规(主图要纯白底、无文字水印;TK 常是营销图)——gap_check 会给过图清单+自动初筛")
     print(f"\n下一步:python gap_check.py \"{path}\"")
 

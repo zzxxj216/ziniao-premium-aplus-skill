@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """TK 产品同步到 Shopify(经中间层建品,**status=draft 写死**,上架永远人工)。
 
-用法(默认只打印 payload 计划;人点头后加 --go 才真建):
+用法(不带 --go 只打印 payload 计划自查;加 --go 真建):
   python to_shopify.py tk_drafts/<id>/draft.json [选项]
   python to_shopify.py tk_drafts/<id>/draft.json --go
 
@@ -71,7 +71,7 @@ def build_payload(draft: dict, opt: dict) -> dict:
         price = s0.get("price")
         if price is None:
             raise SystemExit(f"[拒绝] TK 价取不到(raw={s0.get('price_raw')!r}),必须 --price 指定")
-        print(f"  价格沿用 TK:{price}(raw {s0.get('price_raw')!r} —— 无小数点的 raw 有百倍歧义,确认过再 --go)")
+        print(f"  价格沿用 TK:{price}(raw {s0.get('price_raw')!r} —— 无小数点的 raw 有百倍歧义,按合理售价判断)")
     qty = int(opt.get("qty") or s0.get("qty_tk") or 0)
     title = (opt.get("title") or draft.get("title_tk") or "")[:255]
 
@@ -138,7 +138,7 @@ def main(argv: list):
     print("=== TK → Shopify 建品计划(status=draft)===")
     print(json.dumps(view, ensure_ascii=False, indent=1)[:2000])
     if not go:
-        print("\n[dry] 未发请求。把计划贴给用户确认;点头后加 --go 真建(Shopify 草稿)。")
+        print("\n[dry] 未发请求。计划无误就加 --go 真建(Shopify 草稿)。")
         return
     o = _api("POST", "/products", body=payload)
     d = (o.get("data") or {})
