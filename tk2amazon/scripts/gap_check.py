@@ -58,7 +58,7 @@ def main(path: str):
         todo.append("写 product_description(基于 draft 的 description_text 重写成 Amazon 风格英文纯文本)")
     bk = a.get("backend_keywords")
     if not bk:
-        todo.append("拼后端词(空格分隔英文搜索词,≤249 字节,别与标题重复)")
+        todo.append("AI 生成英文搜索词拼后端词(放没进标题/五点的长尾词,空格分隔,≤249 字节,别与标题重复)")
     elif not isinstance(bk, str):
         todo.append("backend_keywords 应是字符串(空格分隔),现在不是")
     elif len(bk.encode("utf-8")) > 249:

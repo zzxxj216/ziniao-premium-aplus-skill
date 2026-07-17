@@ -52,8 +52,11 @@ python <skill>/scripts/gap_check.py tk_drafts/<id>/draft.json
    生成 INK- 前缀)。字段类型/示例见 tk_pull.py 里 amazon 块的行内注释(store 是
    `"main"`/`"byane@UK"` 字符串、bullets 是 5 条英文字符串数组、price_usd 是数字)。
    推断不出且填错有实际损失的才去问人。
-5. **你代写文案**(英文):标题≤75、Item Highlight≤125、5 条五点、描述(基于
-   `description_text` 重写,别照抄 TK 的 HTML 腔)、后端词≤249 字节 —— 全部埋词,
+5. **你代写文案**(英文):**先自己生成关键词清单**——按产品事实(TK 标题/类目/材质/
+   用途)拟 5~10 个核心词 + 15~30 个长尾词/场景词,模拟美国买家搜索习惯(如
+   "waterproof name labels for kids""daycare labels dishwasher safe");再全部埋进:
+   标题≤75、Item Highlight≤125、5 条五点、描述(基于 `description_text` 重写,
+   别照抄 TK 的 HTML 腔)、后端词≤249 字节(放没进标题/五点的剩余词,不重复),
    写回 `amazon` 块。
 6. 机械转换 + 建品(不用手拼 30 个属性,脚本来):
    ```bash
@@ -117,6 +120,6 @@ python scripts/to_shopify.py list       # 列 Shopify 产品(只读)
 (无白底强制),但仍建议人扫一眼有没有 TK 水印/促销角标。**
 
 ## 与其它 skill 的分工
-- **amazon-listing**(平级目录 `../amazon-listing/`):Amazon 侧一切读写(第 4/6/7 步在调它);
+- **amazon-listing**(平级目录 `../amazon-listing/`):Amazon 侧一切读写(第 6/7 步在调它);
 - **ziniao-premium-aplus**:同步完想做高级 A+ 时再用;
 - 本 skill 负责「TK 事实搬运 + 缺口管理 + 三平台机械转换」;中间层另有服务端一键同步端点(amazon/etsy 的 sync-from-tiktok),参数都齐时可直调,本 skill 的价值是**把参数自动补对**。

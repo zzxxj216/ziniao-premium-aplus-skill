@@ -131,7 +131,8 @@ python scripts/list_products.py --store 店[@站点] [--all] [--csv f.csv]  # **
 ```
 
 ## 典型完整流程
-1. `keywords.py` 处理关键词表(老板规矩:创建前必须先补关键词表)→ 探针确认 product_type。
+1. 先做关键词:有 Helium10 Cerebro CSV 就跑 `keywords.py` 分级;**没有 CSV 就由你(agent)
+   AI 生成关键词清单**(按产品事实拟核心词+长尾词/场景词,模拟美国买家搜索习惯)→ 探针确认 product_type。
 2. 拼 payload(图用 `file:`;**记得 title_differentiation**)→ 单品 `create_listing.py`、变体族 `create_family.py`:validate 到 VALID → create(父→子)。
 3. `lint_listing.py` 体检 + `family_status.py` 确认状态/当前 ASIN。
 4. `aplus.py create`(或 `bind` 已有文档,**直接传 SKU**)→ 提审。
