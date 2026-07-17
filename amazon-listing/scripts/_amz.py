@@ -62,6 +62,12 @@ def consume_store(argv: list) -> list:
         if argv[i].startswith("--store="):
             store = argv[i].split("=", 1)[1].strip(); i += 1; continue
         out.append(argv[i]); i += 1
+    # 大小写归一:店名小写、站点码大写(运营常写 XINGNEST@uk 之类)
+    if "@" in store:
+        _b, _, _s = store.partition("@")
+        store = _b.lower() + "@" + _s.upper()
+    else:
+        store = store.lower()
     allowed = _allowed_stores()
     # 二维寻址 store@SITE(如 byane@UK):白名单按店名部分校验;站点由中间层解析,
     # 未授权区域中间层会给出清晰报错(缺哪个条目)。白名单里写 byane@UK 则只放行该站点。

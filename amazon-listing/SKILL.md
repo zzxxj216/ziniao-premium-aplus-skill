@@ -22,7 +22,7 @@ description: 在 Amazon(inkelligent 等店/美国站)创建 listing(单品或设
     站点码:US/CA/MX(北美)、UK/DE/FR/IT/ES(欧洲)、JP/AU/SG(远东)。SP-API token 按**区域**签发,
     中间层自动选对区域条目 + 站点 marketplace;同店不同区域 seller_id 不同,**全部内部处理,无需关心**。
   - **先看有哪些店/站点**:`python scripts/stores.py` 列「店铺×站点」矩阵(seller_id/是否已授权/寻址写法;
-    数据=赛狐注册表+本地授权,Tootoo/Xingnest 已排除)。❌未授权 = 该区域缺 SP-API token。
+    数据=赛狐注册表+本地授权,Tootoo 已排除)。❌未授权 = 该区域缺 SP-API token。
   - 旧写法全兼容:`--store byane_eu` / `--store qifengz` 照常;别名 inkelligent→main、huhole→qifengz。
   - **可用店铺动态取自中间层 `GET /amazon/stores`**。不在列表**直接拒绝**;env `AMAZON_ALLOWED_STORES`
     显式设置时优先(可写 `byane` 放行全站点,或 `byane@UK` 只放行英国站);中间层连不上退内置兜底。
