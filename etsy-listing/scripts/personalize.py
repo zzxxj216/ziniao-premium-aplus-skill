@@ -9,6 +9,8 @@
 questions.json = {"personalization_questions":[...]}(结构/规则同 create_listing.py)。
 ⚠️ POST 是**整体替换**:想保留已有问题,先 show 拿到 question_id,把老问题(带 question_id)
 和新问题一起放进数组再提交;漏掉的老问题会被删掉。
+⚠️ Etsy 怪癖:**draft 状态的 listing GET 个性化会 404**(问题其实已存上,POST 返回里有
+生成的 question_id)。draft 阶段以 POST 返回/后台预览为准;show 报"尚未设置"仅对 active 可信。
 """
 import json
 import sys
