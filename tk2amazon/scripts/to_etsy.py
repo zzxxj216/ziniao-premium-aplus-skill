@@ -11,6 +11,8 @@
   --price 12.99       统一价覆盖 | --price-mult 1.3  价格倍率(默认 1.0=沿用 TK 价)
   --qty 100           数量覆盖(1-999;缺省 TK 库存)
   --taxonomy-id 1317  类目(默认 1317=Stickers;查询:profiles 子命令)
+  --shipping-profile-id <id>  运费模板(先跑 profiles 子命令看列表选一个;
+                      不给则端点兜底用店铺第一个模板——多模板店铺务必显式指定)
   --listing-id <id>   更新已有 Etsy listing 的文案/tags(不动图和变体)
   --shop main         TK 店铺
 辅助查询(只读):
@@ -101,6 +103,11 @@ def build_body(draft: dict, opt: dict) -> dict:
         body["quantity_override"] = q
     if opt.get("taxonomy_id") is not None:
         body["taxonomy_id"] = int(opt["taxonomy_id"])
+    if opt.get("shipping_profile_id") is not None:
+        body["shipping_profile_id"] = int(opt["shipping_profile_id"])
+    else:
+        print("  [warn] 未指定 --shipping-profile-id,端点将用店铺第一个运费模板;"
+              "多模板店铺先跑 profiles 子命令选对再 --go")
     if opt.get("listing_id") is not None:
         body["etsy_listing_id"] = int(opt["listing_id"])
     return body
@@ -116,7 +123,8 @@ def main(argv: list):
     path = argv[0]
     opt, go, i = {}, False, 1
     keymap = {"--tags": "tags", "--title": "title", "--price": "price", "--price-mult": "price_mult",
-              "--qty": "qty", "--taxonomy-id": "taxonomy_id", "--listing-id": "listing_id"}
+              "--qty": "qty", "--taxonomy-id": "taxonomy_id", "--listing-id": "listing_id",
+              "--shipping-profile-id": "shipping_profile_id"}
     while i < len(argv):
         if argv[i] == "--go":
             go = True; i += 1; continue

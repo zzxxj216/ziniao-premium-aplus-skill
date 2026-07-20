@@ -102,8 +102,8 @@ gap_check**(平台要求宽松),直接用专属脚本 —— **直接带 `--go` 
 
 ```bash
 # Etsy(走中间层现成端点;tags 必给——TK 没有对应字段,你自行拟定)
-python scripts/to_etsy.py tk_drafts/<id>/draft.json --tags "a,b,..."(≤13)        [--title ..] [--price 12.99|--price-mult 1.3] [--qty 1-999] [--taxonomy-id 1317] [--go]
-python scripts/to_etsy.py profiles      # 查运费模板/备货时效/类目(只读)
+python scripts/to_etsy.py profiles      # 先查运费模板/备货时效/类目(只读),选好运费模板 id
+python scripts/to_etsy.py tk_drafts/<id>/draft.json --tags "a,b,..."(≤13) --shipping-profile-id <id>        [--title ..] [--price 12.99|--price-mult 1.3] [--qty 1-999] [--taxonomy-id 1317] [--go]
 python scripts/to_etsy.py list draft    # 列 Etsy 草稿(只读)
 # 建成后:draft 状态,上架=人工 PATCH state=active(开始计上架费);
 # ⚠️ 重复 --go 会建新草稿不覆盖;更新已有 listing 用 --listing-id <id>(只刷文案/tags)
@@ -113,8 +113,9 @@ python scripts/to_shopify.py tk_drafts/<id>/draft.json [--title ..] [--price ..]
 python scripts/to_shopify.py list       # 列 Shopify 产品(只读)
 # 建成后:draft 状态,上架=人工在 Shopify 后台切 Active
 ```
-平台差异速查:Etsy 标题 ≤140、tags ≤13、数量 ≤999、类目/运费模板必须有(端点自动兜底取
-店铺第一个,店里没配会报错,先跑 profiles 看);多变体 Etsy 最多 2 维。Shopify 几乎无硬性
+平台差异速查:Etsy 标题 ≤140、tags ≤13、数量 ≤999、类目/运费模板必须有——**运费模板先跑
+profiles 列出、按商品类型选对应的用 `--shipping-profile-id` 显式指定**(不指定端点兜底
+店铺第一个,多模板店铺容易挂错运费,店里没配任何模板会报错);多变体 Etsy 最多 2 维。Shopify 几乎无硬性
 要求(title 即可),多变体自动展开为 variants(option1=变体名)。图片:Etsy 由端点从 TK CDN
 转传;Shopify 优先本地图 base64(先 tk_pull --download)。**TK 图合规要求两平台都宽松
 (无白底强制),但仍建议人扫一眼有没有 TK 水印/促销角标。**
