@@ -1,0 +1,59 @@
+{
+  "_comment": "定制姓名贴纸完整示例:text_input 收名字 + dropdown 选字体 + unlabeled_upload 收买家图。路径改成真实绝对路径。",
+  "title": "Custom Name Stickers Personalized Waterproof Labels for Kids School Supplies Daycare",
+  "description": "Personalized waterproof name stickers made just for you.\n\nHOW TO ORDER\n1. Enter the name in the personalization box\n2. Pick your font\n3. (Optional) Upload a photo or logo\n\nDishwasher & microwave safe, made to order in 1-3 days.",
+  "price": 8.99,
+  "quantity": 999,
+  "taxonomy_id": 1317,
+  "tags": ["name stickers", "custom name labels", "waterproof labels", "kids name tags", "daycare labels", "school supplies", "personalized sticker", "bottle labels", "dishwasher safe", "made to order", "custom labels kids", "name decal", "back to school"],
+  "materials": ["vinyl", "laminate"],
+  "who_made": "i_did",
+  "when_made": "made_to_order",
+  "type": "physical",
+  "shipping_profile_id": 288718622687,
+  "readiness_state_id": null,
+  "return_policy_id": null,
+  "shop_section_id": null,
+  "item_weight": 0.3,
+  "item_weight_unit": "oz",
+  "item_length": 6,
+  "item_width": 4,
+  "item_height": 0.1,
+  "item_dimensions_unit": "in",
+  "images": [
+    "C:/materials/name-stickers/main.png",
+    "C:/materials/name-stickers/fonts.png",
+    "C:/materials/name-stickers/size-chart.png",
+    "C:/materials/name-stickers/in-use.png",
+    "C:/materials/name-stickers/packaging.png"
+  ],
+  "video": null,
+  "personalization": {
+    "personalization_questions": [
+      {
+        "question_text": "Name to print",
+        "question_type": "text_input",
+        "required": true,
+        "max_allowed_characters": 25,
+        "instructions": "Exactly as you want it printed (max 25 characters)"
+      },
+      {
+        "question_text": "Font style",
+        "question_type": "dropdown",
+        "required": true,
+        "options": [
+          {"label": "Cursive"},
+          {"label": "Print"},
+          {"label": "Bubble"}
+        ]
+      },
+      {
+        "question_text": "Upload photo or logo (optional)",
+        "question_type": "unlabeled_upload",
+        "required": false,
+        "max_allowed_files": 1
+      }
+    ]
+  },
+  "properties": []
+}

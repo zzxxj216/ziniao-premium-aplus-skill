@@ -1,12 +1,13 @@
-# Amazon 运营技能合集
+# 运营技能合集
 
-本仓含两个互补的 agent 技能(Claude Code / Codex 通用),各自独立、一个文件夹一个 skill:
+本仓含多个互补的 agent 技能(Claude Code / Codex 通用),各自独立、一个文件夹一个 skill:
 
 | 技能 | 文件夹 | 做什么 |
 |---|---|---|
 | **紫鸟高级A+** | [`ziniao-premium-aplus/`](ziniao-premium-aplus/) | 用紫鸟(浏览器自动化,中心服务)把素材图建成 **Premium 高级 A+** 草稿 |
 | **amazon-listing** | [`amazon-listing/`](amazon-listing/) | 用 SP-API(multi-channel-api 中间层)做 listing **创建/编辑/拉取 + 标准 A+** |
-| **tk2amazon** | [`tk2amazon/`](tk2amazon/) | 把 TikTok Shop 已有产品**同步到 Amazon / Shopify / Etsy**(拉TK→人机协作补缺口→建草稿) |
+| **tk2amazon** | [`tk2amazon/`](tk2amazon/) | 把 TikTok Shop 已有产品**同步到 Amazon / Shopify / Etsy**(拉TK→agent补缺口→建草稿) |
+| **etsy-listing** | [`etsy-listing/`](etsy-listing/) | 在 Etsy 创建**定制化/个性化 listing**(买家填名字/选字体/传图),含个性化问题管理 |
 
 两者**互补**:`ziniao-premium-aplus` 做 SP-API 建不了的 **Premium A+**;`amazon-listing` 做 listing 全流程 + **标准 A+**。
 
