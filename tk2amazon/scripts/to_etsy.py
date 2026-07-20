@@ -16,7 +16,8 @@
   --listing-id <id>   更新已有 Etsy listing 的文案/tags(不动图和变体)
   --shop main         TK 店铺
 辅助查询(只读):
-  python to_etsy.py profiles        # 运费模板/备货时效/退货政策/类目 一览
+  python to_etsy.py shipping-profiles  # 全部运费模板明细(id/名称/类型/发货地/目的地)——选 --shipping-profile-id 用这个
+  python to_etsy.py profiles        # 运费模板/备货时效/退货政策/类目 一览(概览)
   python to_etsy.py list [draft]    # 列 Etsy listing(默认看草稿)
 
 安全:端点建的 listing 一律停在 **draft**(不售卖不计费);上架要人工 PATCH state=active
@@ -48,6 +49,23 @@ def _api(method: str, path: str, *, params=None, body=None, timeout=300) -> dict
             return {"success": False, "message": f"HTTP {e.code}"}
     except urllib.error.URLError as e:
         return {"success": False, "message": f"NETWORK: {e.reason}"}
+
+
+def cmd_shipping_profiles():
+    """全部运费模板明细,供选 --shipping-profile-id。"""
+    o = _api("GET", "/shipping-profiles")
+    rows = (o.get("data") or {}).get("results") or []
+    if not rows:
+        print("没拉到运费模板:", o.get("message") or o.get("detail") or "店铺未配置?")
+        return
+    print(f"Etsy 运费模板:共 {len(rows)} 个(用 --shipping-profile-id <id> 指定)")
+    for r in rows:
+        dests = r.get("shipping_profile_destinations") or []
+        dest_str = ",".join(sorted({d.get("destination_region") or d.get("destination_country_iso") or "?"
+                                    for d in dests})) or "-"
+        print(f"  {r.get('shipping_profile_id')}  [{r.get('profile_type','?')}]  {r.get('title','')}")
+        print(f"      发货地: {r.get('origin_country_iso','?')} {r.get('origin_postal_code') or ''}"
+              f"  目的地({len(dests)}): {dest_str}")
 
 
 def cmd_profiles():
@@ -114,6 +132,8 @@ def build_body(draft: dict, opt: dict) -> dict:
 
 
 def main(argv: list):
+    if argv and argv[0] in ("shipping-profiles", "shipping"):
+        cmd_shipping_profiles(); return
     if argv and argv[0] == "profiles":
         cmd_profiles(); return
     if argv and argv[0] == "list":

@@ -102,7 +102,8 @@ gap_check**(平台要求宽松),直接用专属脚本 —— **直接带 `--go` 
 
 ```bash
 # Etsy(走中间层现成端点;tags 必给——TK 没有对应字段,你自行拟定)
-python scripts/to_etsy.py profiles      # 先查运费模板/备货时效/类目(只读),选好运费模板 id
+python scripts/to_etsy.py shipping-profiles  # 先拉全部运费模板明细(id/类型/发货地/目的地),选好 id
+python scripts/to_etsy.py profiles      # 备货时效/退货政策/类目概览(只读)
 python scripts/to_etsy.py tk_drafts/<id>/draft.json --tags "a,b,..."(≤13) --shipping-profile-id <id>        [--title ..] [--price 12.99|--price-mult 1.3] [--qty 1-999] [--taxonomy-id 1317] [--go]
 python scripts/to_etsy.py list draft    # 列 Etsy 草稿(只读)
 # 建成后:draft 状态,上架=人工 PATCH state=active(开始计上架费);
