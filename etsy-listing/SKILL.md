@@ -25,6 +25,7 @@ description: 在 Etsy 创建**定制化/个性化** listing(草稿):买家下单
 ```bash
 # 1. 查 id(建 listing 要引用的都在这):
 python scripts/queries.py shipping-profiles   # 运费模板(必选一个)
+python scripts/queries.py readiness           # 备货时效(实体商品必选一个)
 python scripts/queries.py taxonomy sticker    # 类目 taxonomy_id
 python scripts/queries.py sections            # 店铺分区(可选)
 python scripts/queries.py properties 1317     # 该类目可设属性(可选)

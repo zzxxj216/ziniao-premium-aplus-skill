@@ -29,8 +29,8 @@ def readiness():
     rows = (_etsy.die_if_failed(_etsy.api("GET", "/readiness-states"), "拉备货时效") or {}).get("results") or []
     print(f"备货时效 {len(rows)} 个:")
     for r in rows:
-        print(f"  {r.get('readiness_state_id')}  {r.get('min_processing_time')}-{r.get('max_processing_time')}"
-              f" {r.get('processing_time_unit') or ''}")
+        print(f"  {r.get('readiness_state_id')}  [{r.get('readiness_state')}]"
+              f"  {r.get('processing_days_display_label') or ''}")
 
 
 def return_policies():

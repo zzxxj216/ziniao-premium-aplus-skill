@@ -89,6 +89,8 @@ def check_spec(s: dict) -> list[str]:
         errs.append("quantity 需 1-999")
     if not s.get("shipping_profile_id"):
         errs.append("缺 shipping_profile_id(实体商品必填;queries.py shipping-profiles 选一个)")
+    if not s.get("readiness_state_id"):
+        errs.append("缺 readiness_state_id(实体商品必填;queries.py readiness 选一个)")
     imgs = s.get("images") or []
     if not imgs:
         errs.append("images 为空(至少 1 张,建议≥5 张、最长边≥2000px)")
@@ -147,8 +149,7 @@ def main(path: str, go: bool):
         print(f"  视频: {'✅' if o.get('success') else '❌ ' + str(o.get('message'))[:80]}")
 
     if s.get("personalization"):
-        _etsy.die_if_failed(_etsy.api("POST", f"/listings/{lid}/personalization", body=s["personalization"]),
-                            "设置个性化")
+        _etsy.die_if_failed(_etsy.set_personalization(lid, s["personalization"]), "设置个性化")
         print(f"  个性化: ✅ {len(qs)} 个问题已设")
 
     for pr in s.get("properties") or []:

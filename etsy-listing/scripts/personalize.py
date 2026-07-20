@@ -46,7 +46,7 @@ def main(argv):
         print(json.dumps(p, ensure_ascii=False, indent=1))
         print("\n[dry] 未发请求。⚠️ 这是整体替换,确认包含要保留的老问题(带 question_id)后加 --go。")
         return
-    _etsy.die_if_failed(_etsy.api("POST", f"/listings/{lid}/personalization", body=p), "设置个性化")
+    _etsy.die_if_failed(_etsy.set_personalization(lid, p), "设置个性化")
     print(f"✅ listing {lid} 个性化已更新({len(qs)} 个问题)。复核:python personalize.py {lid} show")
 
 

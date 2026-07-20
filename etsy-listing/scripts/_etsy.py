@@ -65,3 +65,21 @@ def die_if_failed(o: dict, what: str):
     if not o.get("success"):
         raise SystemExit(f"[失败] {what}:{o.get('message') or o.get('detail')}")
     return o.get("data")
+
+
+def set_personalization(listing_id, payload: dict) -> dict:
+    """设置个性化问题;中间层若是旧版 schema(422 校验挡住)自动降级走 /call 透传。"""
+    o = api("POST", f"/listings/{listing_id}/personalization", body=payload)
+    if o.get("success"):
+        return o
+    det = str(o.get("detail") or o.get("message") or "")
+    if "string_type" in det or "'missing'" in det or "Field required" in det:
+        shop = api("GET", "/shop").get("data") or {}
+        sid = shop.get("shop_id")
+        if sid:
+            return api("POST", "/call", body={
+                "method": "POST",
+                "path": f"/shops/{sid}/listings/{listing_id}/personalization",
+                "params": {"supports_multiple_personalization_questions": "true"},
+                "body": payload})
+    return o
